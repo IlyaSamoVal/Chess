@@ -4,14 +4,30 @@ namespace Chess
 {
     class Rook : Figure //ладья
     {
+
+        public bool IsMoved { get; private set; }
+
         public Rook(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
         {
-
+            IsMoved = false;
         }
 
         protected override List<Position> GetAvailiblePositions()
         {
-            throw new System.NotImplementedException();
+            var ret = new List<Position>();
+            for (int i = 1; i <= Max; i++)
+            {
+                if (i != Pos.A) ret.Add(new Position(Pos.A, i));
+                if (i != Pos.B) ret.Add(new Position(i, Pos.B));
+            }
+            return ret;
+        }
+
+        public override bool Move(int newA, int newB)
+        {
+            var b = base.Move(newA, newB);
+            if (b & !IsMoved) IsMoved = true;
+            return b;
         }
     }
 }
