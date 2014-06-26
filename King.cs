@@ -4,10 +4,10 @@ namespace Chess
 {
     public class King : Figure //король
     {
-        private bool _isMoved;
+        public bool IsMoved { get; private set; }
         public King(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
         {
-            _isMoved = false;
+            IsMoved = false;
         }
 
         protected override List<Position> GetAvailiblePositions()
@@ -31,7 +31,7 @@ namespace Chess
         public override bool Move(int newA, int newB)
         {
             var b = base.Move(newA, newB);
-            if (b & !_isMoved) _isMoved = true;
+            if (b & !IsMoved) IsMoved = true;
             return b;
         }
     }

@@ -5,12 +5,11 @@ namespace Chess
 {
     class Pawn : Figure //пешка
     {
-
-        private bool _isMoved;
+        public bool IsMoved { get; private set; }
 
         public Pawn(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
         {
-            _isMoved = false;
+            IsMoved = false;
         }
 
         protected override List<Position> GetAvailiblePositions()
@@ -20,7 +19,7 @@ namespace Chess
             {
                 new Position(Pos.A+i, Pos.B)
             };
-            if (!_isMoved) ret.Add(new Position(Pos.A+2*i, Pos.B));
+            if (!IsMoved) ret.Add(new Position(Pos.A+2*i, Pos.B));
             return ret;
         }
 
@@ -35,8 +34,9 @@ namespace Chess
         }
         public override bool Move(int newA, int newB)
         {
-            if(!_isMoved) _isMoved = true;
-            return base.Move(newA, newB);
+            var b=base.Move(newA, newB);
+            if (b & !IsMoved) IsMoved = true;
+            return b;
         }
     }
 }
