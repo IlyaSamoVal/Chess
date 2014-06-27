@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chess
 {
@@ -11,7 +12,16 @@ namespace Chess
 
         protected override List<Position> GetAvailiblePositions()
         {
-            throw new NotImplementedException();
+            var ret = new List<Position>();
+            for (int i = 1; i <= Max; i++)
+            {
+                ret.Add(new Position(Pos.A - i, Pos.B - i));
+                ret.Add(new Position(Pos.A - i, Pos.B + i));
+                ret.Add(new Position(Pos.A + i, Pos.B - i));
+                ret.Add(new Position(Pos.A + i, Pos.B + i));
+            }
+            ret = new List<Position>(ret.Where(p => p.A >= 1 & p.B <= Max));
+            return ret;
         }
     }
 }
