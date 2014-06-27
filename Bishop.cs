@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Chess
 {
-    class Bishop : Figure //слон
+    public class Bishop : Figure //слон
     {
         public Bishop(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
         {
@@ -20,8 +20,8 @@ namespace Chess
                 ret.Add(new Position(Pos.A + i, Pos.B - i));
                 ret.Add(new Position(Pos.A + i, Pos.B + i));
             }
-            ret = new List<Position>(ret.Where(p => p.A >= 1 & p.B <= Max));
-            return ret;
+            var tret = new List<Position>(ret.Where(p => (p.A >= 1 & p.A <= Max) & (p.B >= 1 & p.B <= Max)));
+            return tret;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chess
 {
-    class Pawn : Figure //пешка
+    public class Pawn : Figure //пешка
     {
         public bool IsMoved { get; private set; }
 

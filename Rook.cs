@@ -2,7 +2,7 @@
 
 namespace Chess
 {
-    class Rook : Figure //ладья
+    public class Rook : Figure //ладья
     {
 
         public bool IsMoved { get; private set; }
