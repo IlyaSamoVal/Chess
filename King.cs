@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Chess
 {
@@ -10,22 +11,36 @@ namespace Chess
             IsMoved = false;
         }
 
-        protected override List<Position> GetAvailiblePositions()
+        internal override List<Position> GetAvailiblePositions(List<Figure> list)
         {
-            var ret = new List<Position>
-            {
-                new Position(Pos.A - 1, Pos.B - 1),
-                new Position(Pos.A - 1, Pos.B),
-                new Position(Pos.A - 1, Pos.B + 1),
+            var ret = new List<Position>();
+            ////
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A - 1, Pos.B - 1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A - 1, Pos.B - 1));
 
-                new Position(Pos.A, Pos.B - 1),
-                new Position(Pos.A, Pos.B + 1),
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A - 1, Pos.B) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A - 1, Pos.B));
 
-                new Position(Pos.A + 1, Pos.B - 1),
-                new Position(Pos.A + 1, Pos.B),
-                new Position(Pos.A + 1, Pos.B + 1)
-            };
-            return ret;
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A - 1, Pos.B+1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A - 1, Pos.B + 1));
+
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A, Pos.B - 1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A, Pos.B - 1));
+
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A, Pos.B + 1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A, Pos.B + 1));
+
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A + 1, Pos.B - 1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A + 1, Pos.B - 1));
+
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A + 1, Pos.B) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A + 1, Pos.B));
+
+            if (!(list.Exists(f => f.Pos == new Position(Pos.A + 1, Pos.B + 1) & (f.IsBlackColored ^ IsBlackColored))))
+                ret.Add(new Position(Pos.A + 1, Pos.B + 1));
+            ////
+            var tret = new List<Position>(ret.Where(p => (p.A >= 1 & p.A <= 8) & (p.B >= 1 & p.B <= 8)));
+            return tret;
         }
 
         public override bool Move(int newA, int newB)

@@ -19,10 +19,38 @@ namespace Chess
                 A = a;
                 B = b;
             }
+
+            public bool Equals(Position other)
+            {
+                return A == other.A && B == other.B;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(null, obj)) return false;
+                return obj is Position && Equals((Position) obj);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return (A*397) ^ B;
+                }
+            }
+
+            public static bool operator ==(Position left, Position right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator !=(Position left, Position right)
+            {
+                return !left.Equals(right);
+            }
         }
 
         public Position Pos { get; protected set; }
-        public List<Position> AvailiblePositions { get; protected set; }
 
         protected Figure(int a, int b, bool isBlackColored=false)
         {
@@ -31,24 +59,16 @@ namespace Chess
             
             Pos=new Position(a,b);
             IsBlackColored = isBlackColored;
-            AvailiblePositions = GetAvailiblePositions();
         }
 
         public bool IsBlackColored { get; protected set; }
-        protected abstract List<Position> GetAvailiblePositions();
+        internal abstract List<Position> GetAvailiblePositions(List<Figure> list);
         public virtual bool Move(int newA, int newB)
         {
-            if (!AvailiblePositions.Exists(p => p.A == newA & p.B == newB)) return false;
             var retPos = Pos;
             Pos=new Position(newA,newB);
-            AvailiblePositions = GetAvailiblePositions();
             HasMoved(this, retPos);
             return true;
-        }
-
-        public void DeleteAvailiblePosition(int a, int b)
-        {
-            AvailiblePositions.RemoveAll(p => p.A == a & p.B == b);
         }
         public override string ToString()
         {

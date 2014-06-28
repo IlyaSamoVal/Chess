@@ -8,10 +8,10 @@ namespace Chess
         {
         }
 
-        protected override List<Position> GetAvailiblePositions()
+        internal override List<Position> GetAvailiblePositions(List<Figure> list)
         {
-            var l1 = new Bishop(Pos.A, Pos.B).AvailiblePositions;
-            var l2 = new Rook(Pos.A, Pos.B).AvailiblePositions;
+            var l1 = new Bishop(Pos.A, Pos.B).GetAvailiblePositions(list);
+            var l2 = new Rook(Pos.A, Pos.B).GetAvailiblePositions(list);
             l1.AddRange(l2);
             return l1;
         }

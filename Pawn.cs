@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chess
 {
@@ -12,25 +13,26 @@ namespace Chess
             IsMoved = false;
         }
 
-        protected override List<Position> GetAvailiblePositions()
+        internal override List<Position> GetAvailiblePositions(List<Figure> list)
         {
+            var ret = new List<Position>();
+            ////
             var i = IsBlackColored ? -1 : 1;
-            var ret = new List<Position>
+            ////
+            if (!list.Exists(f => f.Pos == new Position(Pos.A, Pos.B+i)))
             {
-                new Position(Pos.A+i, Pos.B)
-            };
-            if (!IsMoved) ret.Add(new Position(Pos.A+2*i, Pos.B));
-            return ret;
-        }
-
-        public bool MakePawnPossibleToAttack(int newA, int newB)
-        {
-            if ((newB == Pos.A + (IsBlackColored ? -1 : 1)) & (Math.Abs(newB - Pos.B) == 1))
-            {
-                AvailiblePositions.Add(new Position(newA, newB));
-                return true;
+                ret.Add(new Position(Pos.A, Pos.B+i));
+                if (!IsMoved) ret.Add(new Position(Pos.A, Pos.B + 2*i));
             }
-            return false;
+            ////
+            if (list.Exists(f => f.Pos == new Position(Pos.A + 1, Pos.B+i)))
+                ret.Add(new Position(Pos.A + 1, Pos.B + i));
+            ////
+            if (list.Exists(f => f.Pos == new Position(Pos.A -1, Pos.B +i)))
+                ret.Add(new Position(Pos.A - 1, Pos.B + i));
+            ////
+            var tret = new List<Position>(ret.Where(p => (p.A >= 1 & p.A <= 8) & (p.B >= 1 & p.B <= 8)));
+            return tret;
         }
         public override bool Move(int newA, int newB)
         {

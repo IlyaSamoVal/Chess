@@ -55,12 +55,7 @@ namespace Chess
         void figure_HasMoved(Figure figure, Figure.Position oldPosition)
         {
             Moves.Add(new Move {NewPosition = figure.Pos, OldPosition = oldPosition});
-
-        }
-
-        public Figure this[int a, int b]
-        {
-            get { return _figures.Single(p => p.Pos.A == a & p.Pos.B == b); }
+            _figures.RemoveAll(p => p.Pos == figure.Pos & p != figure);
         }
     }
 }
