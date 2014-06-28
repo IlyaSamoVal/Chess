@@ -7,7 +7,7 @@ namespace Chess
 
         public bool IsMoved { get; private set; }
 
-        public Rook(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
+        public Rook(int a, int b, bool isBlackColored=false) : base(a, b, isBlackColored)
         {
             IsMoved = false;
         }
@@ -15,7 +15,7 @@ namespace Chess
         protected override List<Position> GetAvailiblePositions()
         {
             var ret = new List<Position>();
-            for (int i = 1; i <= Max; i++)
+            for (var i = 1; i <= 8; i++)
             {
                 if (i != Pos.A) ret.Add(new Position(Pos.A, i));
                 if (i != Pos.B) ret.Add(new Position(i, Pos.B));

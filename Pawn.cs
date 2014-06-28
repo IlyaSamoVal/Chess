@@ -7,7 +7,7 @@ namespace Chess
     {
         public bool IsMoved { get; private set; }
 
-        public Pawn(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
+        public Pawn(int a, int b, bool isBlackColored=false) : base(a, b, isBlackColored)
         {
             IsMoved = false;
         }

@@ -5,7 +5,7 @@ namespace Chess
     public class King : Figure //король
     {
         public bool IsMoved { get; private set; }
-        public King(int a, int b, bool isBlackColored) : base(a, b, isBlackColored)
+        public King(int a, int b, bool isBlackColored=false) : base(a, b, isBlackColored)
         {
             IsMoved = false;
         }
