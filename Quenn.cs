@@ -2,7 +2,7 @@
 
 namespace Chess
 {
-    public class Quenn : Figure //ферзь
+    internal class Quenn : Figure //ферзь
     {
         public Quenn(int a, int b, bool isBlackColored=false) : base(a, b, isBlackColored)
         {

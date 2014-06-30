@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Chess
 {
-    public class Rook : Figure //ладья
+    internal class Rook : Figure //ладья
     {
 
         public bool IsMoved { get; private set; }

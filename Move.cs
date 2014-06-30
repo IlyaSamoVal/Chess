@@ -1,8 +1,8 @@
 ﻿namespace Chess
 {
-    internal class Move
+    public class Move
     {
-        public Figure.Position OldPosition { get; set; }
-        public Figure.Position NewPosition { get; set; }
+        public Position OldPosition { get; set; }
+        public Position NewPosition { get; set; }
     }
 }

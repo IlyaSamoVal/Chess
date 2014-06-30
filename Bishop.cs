@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Chess
 {
-    public class Bishop : Figure //слон
+    internal class Bishop : Figure //слон
     {
         public Bishop(int a, int b, bool isBlackColored=false) : base(a, b, isBlackColored)
         {
