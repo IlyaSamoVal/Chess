@@ -6,7 +6,14 @@ namespace Chess
     public class Desk
     {
         private List<Figure> _figures;
-        public List<Move> Moves { get; private set; } 
+        public List<Move> Moves { get; private set; }
+
+        public delegate void Won(bool isBlack);
+
+        public event Won HasWon;
+
+
+
         public static Desk ClassicChessDesk()
         {
             var ret = new Desk
@@ -55,7 +62,7 @@ namespace Chess
             }
         }
 
-        void figure_HasMoved(Figure figure, Position oldPosition)
+        private void figure_HasMoved(Figure figure, Position oldPosition)
         {
             Moves.Add(new Move {NewPosition = figure.Pos, OldPosition = oldPosition});
             _figures.RemoveAll(p => p.Pos == figure.Pos & p != figure);
@@ -63,12 +70,30 @@ namespace Chess
 
         public List<Position> GetAvailiblePositions(Position position)
         {
+            if (_figures.Single(f => f.Pos == position).GetType() == typeof (King))
                 return _figures.Single(f => f.Pos == position).GetAvailiblePositions(_figures);
+            return
+                (List<Position>)
+                    _figures.Single(f => f.Pos == position)
+                        .GetAvailiblePositions(_figures)
+                        .Except(GetAllAvailiblePositionsExcept(_figures.Single(f => f.Pos == position)));
         }
+
+        private IEnumerable<Position> GetAllAvailiblePositionsExcept(Figure single)
+        {
+            var ret = new List<Position>();
+            foreach (var figure in _figures.Where(f => !(f.IsBlackColored ^ single.IsBlackColored)))
+            {
+                ret.AddRange(figure.GetAvailiblePositions(_figures));
+            }
+            return ret;
+        }
+
         public List<Position> GetBlackPositions()
         {
             return _figures.Where(f => f.IsBlackColored).Select(figure => figure.Pos).ToList();
         }
+
         public List<Position> GetWhitePositions()
         {
             return _figures.Where(f => !f.IsBlackColored).Select(figure => figure.Pos).ToList();
@@ -76,7 +101,37 @@ namespace Chess
 
         public bool MoveFigure(Position figurePosition, Position newPosition)
         {
-            return _figures.Single(f => f.Pos == figurePosition).Move(newPosition);
+            var ret = _figures.Single(f => f.Pos == figurePosition).Move(newPosition);
+            CheckWinStatement();
+            return ret;
+        }
+
+        private void CheckWinStatement()
+        {
+            CheckWhiteWin();
+            CheckBlackWin();
+        }
+
+        private void CheckWhiteWin()
+        {
+            var wk = _figures.Single(f => f.GetType() == typeof (King) & !f.IsBlackColored);
+            if (GetAvailiblePositions(wk.Pos).Count != 0) return;
+            if (
+                _figures
+                    .Where(f => f.IsBlackColored)
+                    .Any(figure => GetAvailiblePositions(figure.Pos)
+                        .Contains(wk.Pos)))
+                HasWon(true);
+        }
+
+        private void CheckBlackWin()
+        {
+            var wk = _figures.Single(f => f.GetType() == typeof (King) & f.IsBlackColored);
+            if (GetAvailiblePositions(wk.Pos).Count != 0) return;
+            if (_figures.Where(f => !f.IsBlackColored)
+                .Any(figure => GetAvailiblePositions(figure.Pos)
+                    .Contains(wk.Pos)))
+                HasWon(false);
         }
     }
 }
